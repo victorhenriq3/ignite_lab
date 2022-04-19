@@ -25,4 +25,6 @@ export class Purchase {
 
   @Field(() => Product)
   product: Product;
+
+  productId: string;
 }

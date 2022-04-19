@@ -1,13 +1,17 @@
 import { UseGuards } from '@nestjs/common';
 import { Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { AuthorizationGuard } from 'src/http/auth/authorization.guard';
+import { ProductsService } from 'src/services/products.service';
 import { PurchaseServices } from 'src/services/purchase.service';
 import { Product } from '../models/product';
 import { Purchase } from '../models/purchase';
 
-@Resolver()
+@Resolver(() => Purchase)
 export class PurchaseResolver {
-  constructor(private purchasesService: PurchaseServices) {}
+  constructor(
+    private purchasesService: PurchaseServices,
+    private productService: ProductsService,
+  ) {}
 
   @Query(() => [Purchase])
   @UseGuards(AuthorizationGuard)
@@ -16,5 +20,7 @@ export class PurchaseResolver {
   }
 
   @ResolveField(() => Product)
-  product(@Parent() purchase: Purchase) {}
+  product(@Parent() purchase: Purchase) {
+    return this.productService.getProductById(purchase.productId);
+  }
 }
