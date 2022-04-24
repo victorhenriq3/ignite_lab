@@ -34,7 +34,7 @@ export class PurchaseController {
 
     if (!student) {
       student = await this.studentsService.createStudent({
-        authUserID: payload.customer.authUserId,
+        authUserId: payload.customer.authUserId,
       });
     }
 

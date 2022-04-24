@@ -13,7 +13,7 @@ model Student {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  authUserID String? @unique
+  authUserId String? @unique
 
   enrollments Enrollment[]
 }
