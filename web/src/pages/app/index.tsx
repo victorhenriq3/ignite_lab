@@ -3,19 +3,10 @@ import { gql, useQuery } from "@apollo/client";
 import { getAccessToken, useUser, withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { withApollo } from "../../lib/withApollo";
 
-const PRODUCTS_QUERY = gql`
-    query GetProducts {
-        products{
-            id
-            title
-        }
-    }
-`
-
 function Home(){
     const {user} = useUser()
 
-    const {data, loading, error} = useQuery(PRODUCTS_QUERY)
+    const {data, loading, error} = useQuery()
 
     return (
         <div>
