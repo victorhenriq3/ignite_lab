@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 import { gql, useQuery } from "@apollo/client";
 import { getAccessToken, useUser, withPageAuthRequired } from "@auth0/nextjs-auth0";
-import { GetServerSideProps } from "next";
+import { withApollo } from "../../lib/withApollo";
 
 const PRODUCTS_QUERY = gql`
     query GetProducts {
@@ -12,7 +12,7 @@ const PRODUCTS_QUERY = gql`
     }
 `
 
-export default function Home(){
+function Home(){
     const {user} = useUser()
 
     const {data, loading, error} = useQuery(PRODUCTS_QUERY)
@@ -32,13 +32,14 @@ export default function Home(){
     )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
-    const token = getAccessToken(req, res);
-
-    console.log(token);
+export const getServerSideProps = withPageAuthRequired({
+    getServerSideProps: async ({req, res}) => {
+        console.log(getAccessToken(req, res));
     
-
-    return {
-        props: {}
+        return {
+            props: {}
+        }
     }
-};
+});
+
+export default withApollo(Home)
